@@ -4,6 +4,7 @@ import { TiltCard } from "@/components/ui/TiltCard";
 import { CinematicTimeline } from "@/components/ui/CinematicTimeline";
 import { Award, Briefcase, GraduationCap } from "lucide-react";
 import { motion } from "framer-motion";
+import { bindInteractionStyles } from "@/lib/interaction";
 
 export default function About() {
 
@@ -91,18 +92,20 @@ export default function About() {
 
   return (
     <PageWrapper>
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6">
 
         {/* ── Page Header ── */}
-        <div className="max-w-4xl mx-auto mb-20 text-center">
-          <h1 className="text-4xl md:text-6xl font-black mb-6">About <span className="text-primary">Me</span></h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
+        <div className="max-w-4xl mx-auto mb-8 sm:mb-12 md:mb-14 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3 sm:mb-4 md:mb-6">
+            About <span className="text-primary">Me</span>
+          </h1>
+          <p className="text-sm sm:text-base md:text-xl text-muted-foreground leading-relaxed px-1">
             I am a multi-disciplinary creator operating at the intersection of design, code, and visual effects. I don't just build websites; I engineer digital experiences that captivate and convert.
           </p>
         </div>
 
         {/* ── Stats ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5 mb-8 sm:mb-12 md:mb-14">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
@@ -111,18 +114,18 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <TiltCard maxTilt={12} className="p-6 text-center border-white/5 hover:border-primary/40 bg-background/40">
-                <div className="text-4xl font-black text-primary mb-2 font-display">
+              <TiltCard maxTilt={12} className="p-4 sm:p-6 text-center border-white/5 hover:border-primary/40 bg-background/40">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-1 sm:mb-2 font-display">
                   <Counter end={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-muted-foreground font-medium uppercase tracking-wider text-xs">{stat.label}</div>
+                <div className="text-muted-foreground font-medium uppercase tracking-wider text-[10px] sm:text-xs leading-snug">{stat.label}</div>
               </TiltCard>
             </motion.div>
           ))}
         </div>
 
         {/* ── Journey + Certifications ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 mb-8 sm:mb-12 md:mb-14">
 
           {/* LEFT: Timeline */}
           <div>
@@ -131,11 +134,11 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 mb-8"
+              className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6"
             >
-              <div className="w-1 h-7 rounded-full bg-primary shadow-[0_0_10px_rgba(0,170,204,0.7)]" />
-              <h2 className="text-2xl font-black font-display text-white tracking-wide flex items-center gap-2">
-                <Briefcase className="text-primary w-5 h-5" /> Journey
+              <div className="w-1 h-6 sm:h-7 rounded-full bg-primary shadow-[0_0_10px_rgba(0,170,204,0.7)]" />
+              <h2 className="text-lg sm:text-2xl font-black font-display text-white tracking-wide flex items-center gap-2">
+                <Briefcase className="text-primary w-4 h-4 sm:w-5 sm:h-5 shrink-0" /> My Journey
               </h2>
             </motion.div>
             <CinematicTimeline />
@@ -148,16 +151,16 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6"
             >
-              <div className="w-1 h-7 rounded-full bg-accent shadow-[0_0_10px_rgba(255,186,0,0.7)]" />
-              <h2 className="text-2xl font-black font-display text-white tracking-wide flex items-center gap-2">
-                <GraduationCap className="text-accent w-5 h-5" /> Certifications
+              <div className="w-1 h-6 sm:h-7 rounded-full bg-accent shadow-[0_0_10px_rgba(255,186,0,0.7)]" />
+              <h2 className="text-lg sm:text-2xl font-black font-display text-white tracking-wide flex items-center gap-2">
+                <GraduationCap className="text-accent w-4 h-4 sm:w-5 sm:h-5 shrink-0" /> Certifications
               </h2>
             </motion.div>
 
-            {/* 3-col square grid */}
-            <div className="grid grid-cols-3 gap-2.5">
+            {/* Responsive cert grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5">
               {certs.map((cert, i) => (
                 <motion.div
                   key={i}
@@ -168,7 +171,7 @@ export default function About() {
                   className="group"
                 >
                   <div
-                    className="relative w-full rounded-xl overflow-hidden cursor-default"
+                    className="relative w-full rounded-xl overflow-hidden cursor-default touch-manipulation"
                     style={{
                       aspectRatio: "1 / 1",
                       background: cert.cardBg,
@@ -176,18 +179,18 @@ export default function About() {
                       boxShadow: "0 2px 16px rgba(0,0,0,0.5)",
                       transition: "border 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease",
                     }}
-                    onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.border = `1px solid rgba(${cert.accentRgb},0.5)`;
-                      el.style.boxShadow = `0 0 0 1px rgba(${cert.accentRgb},0.12), 0 6px 28px rgba(${cert.accentRgb},0.2), 0 2px 10px rgba(0,0,0,0.55)`;
-                      el.style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.border = "1px solid rgba(255,255,255,0.06)";
-                      el.style.boxShadow = "0 2px 16px rgba(0,0,0,0.5)";
-                      el.style.transform = "translateY(0)";
-                    }}
+                    {...bindInteractionStyles(
+                      {
+                        border: `1px solid rgba(${cert.accentRgb},0.5)`,
+                        boxShadow: `0 0 0 1px rgba(${cert.accentRgb},0.12), 0 6px 28px rgba(${cert.accentRgb},0.2), 0 2px 10px rgba(0,0,0,0.55)`,
+                        transform: "translateY(-2px)",
+                      },
+                      {
+                        border: "1px solid rgba(255,255,255,0.06)",
+                        boxShadow: "0 2px 16px rgba(0,0,0,0.5)",
+                        transform: "translateY(0)",
+                      }
+                    )}
                   >
                     {/* Brand color wash */}
                     <div className="absolute inset-0 z-[1]" style={{ background: cert.overlayGrad }} />
@@ -202,11 +205,11 @@ export default function About() {
                     />
 
                     {/* Logo — upper portion */}
-                    <div className="absolute inset-0 z-[2] flex items-start justify-center pt-4 px-4">
+                    <div className="absolute inset-0 z-[2] flex items-start justify-center pt-3 sm:pt-4 px-2 sm:px-4">
                       <img
                         src={cert.logo}
                         alt={cert.issuer}
-                        className="w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                        className="w-full object-contain transition-transform duration-500 group-hover:scale-105 group-active:scale-105"
                         style={{
                           height: "52%",
                           filter: `drop-shadow(0 2px 10px rgba(${cert.accentRgb},0.3)) drop-shadow(0 2px 6px rgba(0,0,0,0.7))`,
@@ -224,10 +227,10 @@ export default function About() {
                     />
 
                     {/* Footer */}
-                    <div className="absolute bottom-0 left-0 right-0 z-[4] px-2.5 pb-2.5">
+                    <div className="absolute bottom-0 left-0 right-0 z-[4] px-2 pb-2 sm:px-2.5 sm:pb-2.5">
                       {/* Verified pill */}
                       <div
-                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full mb-1 text-[8px] font-bold tracking-widest uppercase"
+                        className="inline-flex items-center gap-0.5 sm:gap-1 px-1 sm:px-1.5 py-0.5 rounded-full mb-0.5 sm:mb-1 text-[7px] sm:text-[8px] font-bold tracking-widest uppercase"
                         style={{
                           background: `rgba(${cert.accentRgb},0.15)`,
                           border: `1px solid rgba(${cert.accentRgb},0.38)`,
@@ -242,7 +245,7 @@ export default function About() {
 
                       {/* Title */}
                       <h4
-                        className="font-bold text-[11.5px] leading-tight text-white/95 mb-0.5"
+                        className="font-bold text-[9.5px] sm:text-[11.5px] leading-tight text-white/95 mb-0.5 line-clamp-2"
                         style={{ textShadow: "0 1px 4px rgba(0,0,0,0.95)" }}
                       >
                         {cert.title}
@@ -250,7 +253,7 @@ export default function About() {
 
                       {/* Issuer */}
                       <p
-                        className="text-[10px] font-semibold flex items-center gap-1"
+                        className="text-[8.5px] sm:text-[10px] font-semibold flex items-center gap-1 truncate"
                         style={{ opacity: 0.9 }}
                       >
                         <span
@@ -270,19 +273,19 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
-              className="mt-8"
+              className="mt-6 sm:mt-8"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-7 rounded-full bg-secondary shadow-[0_0_10px_rgba(255,140,0,0.7)]" />
-                <h2 className="text-2xl font-black font-display text-white tracking-wide flex items-center gap-2">
-                  <Award className="text-secondary w-5 h-5" /> Expertise &amp; Skillset
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <div className="w-1 h-6 sm:h-7 rounded-full bg-secondary shadow-[0_0_10px_rgba(255,140,0,0.7)]" />
+                <h2 className="text-lg sm:text-2xl font-black font-display text-white tracking-wide flex items-center gap-2">
+                  <Award className="text-secondary w-4 h-4 sm:w-5 sm:h-5 shrink-0" /> Expertise &amp; Skillset
                 </h2>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {["React", "TypeScript", "Next.js", "Node.js", "Flutter", "Java", "JavaFX", "UI/UX", "Photoshop", "After Effects", "Blender", "Linux", "MySQL", "Docker"].map((skill, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1.5 glassmorphism rounded-full text-xs font-medium border-white/10 hover:border-secondary/50 hover:text-secondary transition-colors cursor-default"
+                    className="px-2.5 py-1 sm:px-3 sm:py-1.5 glassmorphism rounded-full text-[11px] sm:text-xs font-medium border border-white/10 hover:border-secondary/50 hover:text-secondary active:border-secondary/50 active:text-secondary transition-colors cursor-default touch-manipulation"
                   >
                     {skill}
                   </span>

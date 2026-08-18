@@ -8,6 +8,8 @@ import { Code, Monitor, PenTool, ExternalLink, ChevronRight, Phone, Award, Gradu
 import { PROJECTS } from "@/lib/projectsData";
 import { Counter } from "@/components/ui/Counter";
 import { CinematicTimeline } from "@/components/ui/CinematicTimeline";
+import { useFinePointer } from "@/hooks/use-fine-pointer";
+import { bindInteractionStyles } from "@/lib/interaction";
 
 function FloatingShapes() {
   return (
@@ -131,7 +133,7 @@ function NotebookCard() {
     >
       {/* Header */}
       <div
-        className="flex items-center gap-2 px-5 py-3"
+        className="flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3"
         style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
       >
         {/* Traffic-light dots */}
@@ -147,9 +149,9 @@ function NotebookCard() {
       </div>
 
       {/* Text area */}
-      <div className="px-6 py-5" style={{ minHeight: 264 }}>
+      <div className="px-4 py-4 sm:px-6 sm:py-5 min-h-[200px] sm:min-h-[264px]">
         <div
-          className="leading-[1.85] tracking-wide text-[13.5px] break-words"
+          className="leading-[1.75] sm:leading-[1.85] tracking-wide text-[11px] sm:text-[13.5px] break-words"
           style={{ fontFamily: "'Courier New', Courier, monospace", whiteSpace: "pre-wrap" }}
         >
           {/* Render every character with flame color */}
@@ -197,6 +199,7 @@ function NotebookCard() {
 }
 
 export default function Home() {
+  const hasFinePointer = useFinePointer();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -260,10 +263,9 @@ export default function Home() {
     <>
       {/* ── HERO — full-bleed video background ── */}
       <section
+        className="min-h-[100dvh] h-[100dvh]"
         style={{
           position: "relative",
-          minHeight: "100vh",
-          height: "100vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -297,53 +299,57 @@ export default function Home() {
         <div style={{ position: "absolute", inset: 0, zIndex: 2, background: "linear-gradient(to top, rgba(5,8,22,0.85) 0%, transparent 60%)", pointerEvents: "none" }} />
 
         {/* Hero content */}
-        <div className="container mx-auto px-6 relative pt-28" style={{ zIndex: 3 }}>
+        <div className="container mx-auto px-4 sm:px-6 relative pt-20 sm:pt-24 md:pt-28" style={{ zIndex: 3 }}>
 
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tighter">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-3 sm:mb-4 tracking-tighter leading-[1.05]">
             Vinay Kumar
           </h1>
 
-          <div className="text-xl md:text-md lg:text-xl font-medium text-muted-foreground h-12 flex items-center mb-10">
-            <span className="mr-3">I am a</span>
-            <span className="text-white font-display">
+          <div className="text-base sm:text-lg md:text-xl font-medium text-muted-foreground min-h-[3.5rem] sm:min-h-12 flex flex-col sm:flex-row sm:items-center items-start mb-6 sm:mb-10 gap-1 sm:gap-0">
+            <span className="sm:mr-3 shrink-0">I am a</span>
+            <span className="text-white font-display break-words">
               <Typewriter words={["Full Stack Developer", "UI/UX Designer", "Mobile App Developer"]} />
             </span>
           </div>
 
-          <div className="flex flex-wrap gap-4 mt-4">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mt-2 sm:mt-4 w-full sm:w-auto">
             {/* View Projects Button */}
-            <Link href="/projects">
+            <Link href="/projects" className="w-full sm:w-auto">
               <motion.div
                 data-testid="button-view-projects"
-                whileHover={{ scale: 1.06, y: -4 }}
+                whileHover={hasFinePointer ? { scale: 1.06, y: -4 } : undefined}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 350, damping: 20 }}
-                className="relative overflow-hidden glassmorphism cursor-pointer px-8 py-4 rounded-lg font-bold text-primary border border-primary/50 transition-colors duration-300 group"
+                className="relative overflow-hidden glassmorphism cursor-pointer w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold text-sm sm:text-base text-primary border border-primary/50 transition-colors duration-300 group text-center active:border-primary/70"
                 style={{ boxShadow: "0 0 0 rgba(0,170,204,0)" }}
-                onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 28px rgba(0,170,204,0.45), 0 8px 24px rgba(0,0,0,0.4)")}
-                onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 0 rgba(0,170,204,0)")}
+                {...bindInteractionStyles(
+                  { boxShadow: "0 0 28px rgba(0,170,204,0.45), 0 8px 24px rgba(0,0,0,0.4)" },
+                  { boxShadow: "0 0 0 rgba(0,170,204,0)" }
+                )}
               >
                 {/* shimmer sweep */}
-                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full group-active:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
                 <span className="relative z-10">View Projects</span>
               </motion.div>
             </Link>
 
             {/* Hire Me Button */}
-            <Link href="/contact">
+            <Link href="/contact" className="w-full sm:w-auto">
               <motion.div
                 data-testid="button-hire-me"
-                whileHover={{ scale: 1.06, y: -4 }}
+                whileHover={hasFinePointer ? { scale: 1.06, y: -4 } : undefined}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 350, damping: 20 }}
-                className="relative overflow-hidden glassmorphism cursor-pointer px-8 py-4 rounded-lg font-bold text-accent border border-accent/50 transition-colors duration-300 flex items-center gap-2 group"
+                className="relative overflow-hidden glassmorphism cursor-pointer w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-bold text-sm sm:text-base text-accent border border-accent/50 transition-colors duration-300 flex items-center justify-center gap-2 group active:border-accent/70"
                 style={{ boxShadow: "0 0 0 rgba(255,186,0,0)" }}
-                onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 28px rgba(255,186,0,0.4), 0 8px 24px rgba(0,0,0,0.4)")}
-                onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 0 rgba(255,186,0,0)")}
+                {...bindInteractionStyles(
+                  { boxShadow: "0 0 28px rgba(255,186,0,0.4), 0 8px 24px rgba(0,0,0,0.4)" },
+                  { boxShadow: "0 0 0 rgba(255,186,0,0)" }
+                )}
               >
                 {/* shimmer sweep */}
-                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full group-active:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
                 <span className="relative z-10 flex items-center gap-2">
                   Hire Me
                   <motion.span
@@ -359,14 +365,14 @@ export default function Home() {
         </div>
       </section>
 
-      <PageWrapper>
+      <PageWrapper compactTop>
 
         {/* ── REST OF PAGE — standard container ── */}
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
 
           {/* About Section — Connected Home & About Experience */}
-          <section id="about" className="py-24">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-24">
+          <section id="about" className="py-8 sm:py-10 md:py-14">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center mb-8 sm:mb-10 md:mb-14">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -374,7 +380,7 @@ export default function Home() {
                 className="lg:col-span-5 flex flex-col items-center lg:items-start"
               >
                 {/* ── Photo Card ── */}
-                <div className="relative mb-10 group" style={{ width: 300, height: 380 }}>
+                <div className="relative mb-4 sm:mb-6 group w-full max-w-[240px] sm:max-w-[280px] md:max-w-[300px] aspect-[300/380] mx-auto lg:mx-0">
                   {/* Outer animated glow ring */}
                   <div
                     className="absolute -inset-[3px] rounded-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-700"
@@ -412,8 +418,8 @@ export default function Home() {
                   <div className="absolute top-1/2 -left-3 w-2 h-2 rounded-full bg-accent/60 group-hover:scale-150 transition-transform duration-700" />
                 </div>
 
-                <h2 className="text-3xl font-black mb-4 font-display">The Developer</h2>
-                <p className="text-muted-foreground leading-relaxed text-center lg:text-left">
+                <h2 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 font-display text-center lg:text-left">The Developer</h2>
+                <p className="text-muted-foreground leading-relaxed text-sm sm:text-base text-center lg:text-left">
                   I am a multi-disciplinary creator operating at the intersection of design, code, and visual effects. I don't just build websites; I engineer digital experiences that captivate and convert.
                 </p>
                 <button
@@ -425,13 +431,13 @@ export default function Home() {
               </motion.div>
 
               {/* ── Right column: Notebook + Skill Cards ── */}
-              <div className="lg:col-span-7 flex flex-col gap-6">
+              <div className="lg:col-span-7 flex flex-col gap-3 sm:gap-4">
 
                 {/* ── Notebook Card ── */}
                 <NotebookCard />
 
                 {/* ── Skill popup cards ── */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {[
                     { title: "Web Dev", imgSrc: "/assets/images/webdev.png", desc: "Building scalable and performant applications", color: "text-secondary", glow: "hover:shadow-[0_0_20px_rgba(255,140,0,0.3)]" },
                     { title: "UI/UX", icon: PenTool, desc: "Crafting intuitive and immersive experiences", color: "text-secondary", glow: "hover:shadow-[0_0_20px_rgba(255,140,0,0.3)]" },
@@ -445,16 +451,16 @@ export default function Home() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.15 + i * 0.1, type: "spring", stiffness: 200, damping: 20 }}
                     >
-                      <TiltCard className={`p-5 h-full border-white/5 hover:border-primary/40 transition-all duration-300 bg-background/40 ${item.glow}`}>
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${item.color} bg-white/5 border border-white/8 overflow-hidden p-1.5`}>
+                      <TiltCard className={`p-4 sm:p-5 h-full border-white/5 hover:border-primary/40 transition-all duration-300 bg-background/40 ${item.glow}`}>
+                        <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center mb-2 sm:mb-3 ${item.color} bg-white/5 border border-white/8 overflow-hidden p-1.5`}>
                           {item.imgSrc ? (
                             <img src={item.imgSrc} alt={item.title} className="w-full h-full object-contain" />
                           ) : (
-                            item.icon && <item.icon className="w-5 h-5" />
+                            item.icon && <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                           )}
                         </div>
-                        <h3 className="text-base font-bold mb-1 font-display">{item.title}</h3>
-                        <p className="text-muted-foreground text-xs leading-relaxed">{item.desc}</p>
+                        <h3 className="text-sm sm:text-base font-bold mb-1 font-display">{item.title}</h3>
+                        <p className="text-muted-foreground text-[11px] sm:text-xs leading-relaxed">{item.desc}</p>
                       </TiltCard>
                     </motion.div>
                   ))}
@@ -463,7 +469,7 @@ export default function Home() {
             </div>
 
             {/* ── Stats Counter Row ── */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-24">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5 mb-8 sm:mb-10 md:mb-14">
               {[
                 { label: "Projects Completed", value: 10, suffix: "" },
                 { label: "Happy Clients", value: 2, suffix: "" },
@@ -477,25 +483,25 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <TiltCard maxTilt={12} className="p-6 text-center border-white/5 hover:border-primary/40 bg-background/40">
-                    <div className="text-4xl font-black text-primary mb-2 font-display">
+                  <TiltCard maxTilt={12} className="p-4 sm:p-6 text-center border-white/5 hover:border-primary/40 bg-background/40">
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-1 sm:mb-2 font-display">
                       <Counter end={stat.value} suffix={stat.suffix} />
                     </div>
-                    <div className="text-muted-foreground font-medium uppercase tracking-wider text-xs">{stat.label}</div>
+                    <div className="text-muted-foreground font-medium uppercase tracking-wider text-[10px] sm:text-xs leading-snug">{stat.label}</div>
                   </TiltCard>
                 </motion.div>
               ))}
             </div>
 
             {/* ── Journey + Certifications — Side-by-Side Layout ── */}
-            <div id="about-details" className="pt-8">
+            <div id="about-details" className="pt-2 sm:pt-4">
               {/* Section Header */}
-              <div className="text-center mb-12">
+              <div className="text-center mb-6 sm:mb-8 px-1">
                 <motion.h2
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="text-3xl font-black font-display flex items-center justify-center gap-3"
+                  className="text-xl sm:text-2xl md:text-3xl font-black font-display flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3"
                 >
                   <span style={{ filter: "drop-shadow(0 0 8px rgba(0, 136, 204, 0.9))" }}>My Journey</span>
                   <span className="text-primary">&</span>
@@ -506,14 +512,14 @@ export default function Home() {
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.15 }}
-                  className="text-muted-foreground text-sm mt-3"
+                  className="text-muted-foreground text-xs sm:text-sm mt-2 sm:mt-3 px-2"
                 >
                   A timeline of milestones and credentials that define my craft.
                 </motion.p>
               </div>
 
               {/* Two-Column Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-start">
 
                 {/* ── LEFT: Timeline ── */}
                 <div>
@@ -522,10 +528,10 @@ export default function Home() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="flex items-center gap-3 mb-6"
+                    className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4"
                   >
-                    <div className="w-1 h-7 rounded-full bg-primary shadow-[0_0_10px_rgba(0,170,204,0.7)]" />
-                    <h3 className="text-xl font-black font-display text-white tracking-wide">Timeline</h3>
+                    <div className="w-1 h-6 sm:h-7 rounded-full bg-primary shadow-[0_0_10px_rgba(0,170,204,0.7)]" />
+                    <h3 className="text-lg sm:text-xl font-black font-display text-white tracking-wide">My Journey</h3>
                   </motion.div>
                   <CinematicTimeline />
                 </div>
@@ -537,16 +543,16 @@ export default function Home() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="flex items-center gap-3 mb-6"
+                    className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4"
                   >
-                    <div className="w-1 h-7 rounded-full bg-accent shadow-[0_0_10px_rgba(255,186,0,0.7)]" />
-                    <h3 className="text-xl font-black font-display text-white tracking-wide flex items-center gap-2">
-                      <GraduationCap className="text-accent w-5 h-5" /> Certifications
+                    <div className="w-1 h-6 sm:h-7 rounded-full bg-accent shadow-[0_0_10px_rgba(255,186,0,0.7)]" />
+                    <h3 className="text-lg sm:text-xl font-black font-display text-white tracking-wide flex items-center gap-2">
+                      <GraduationCap className="text-accent w-4 h-4 sm:w-5 sm:h-5 shrink-0" /> Certifications
                     </h3>
                   </motion.div>
 
-                  {/* Certificate Cards — 3-col Grid */}
-                  <div className="grid grid-cols-3 gap-2.5">
+                  {/* Certificate Cards — responsive grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5">
                     {[
                       {
                         title: "OCI Foundation",
@@ -630,7 +636,7 @@ export default function Home() {
                         className="group"
                       >
                         <div
-                          className="relative w-full rounded-xl overflow-hidden cursor-default"
+                          className="relative w-full rounded-xl overflow-hidden cursor-default touch-manipulation"
                           style={{
                             aspectRatio: "1 / 1",
                             background: cert.cardBg,
@@ -638,18 +644,18 @@ export default function Home() {
                             boxShadow: "0 2px 16px rgba(0,0,0,0.5)",
                             transition: "border 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease",
                           }}
-                          onMouseEnter={e => {
-                            const el = e.currentTarget as HTMLDivElement;
-                            el.style.border = `1px solid rgba(${cert.accentRgb},0.5)`;
-                            el.style.boxShadow = `0 0 0 1px rgba(${cert.accentRgb},0.12), 0 6px 28px rgba(${cert.accentRgb},0.2), 0 2px 10px rgba(0,0,0,0.55)`;
-                            el.style.transform = "translateY(-2px)";
-                          }}
-                          onMouseLeave={e => {
-                            const el = e.currentTarget as HTMLDivElement;
-                            el.style.border = "1px solid rgba(255,255,255,0.06)";
-                            el.style.boxShadow = "0 2px 16px rgba(0,0,0,0.5)";
-                            el.style.transform = "translateY(0)";
-                          }}
+                          {...bindInteractionStyles(
+                            {
+                              border: `1px solid rgba(${cert.accentRgb},0.5)`,
+                              boxShadow: `0 0 0 1px rgba(${cert.accentRgb},0.12), 0 6px 28px rgba(${cert.accentRgb},0.2), 0 2px 10px rgba(0,0,0,0.55)`,
+                              transform: "translateY(-2px)",
+                            },
+                            {
+                              border: "1px solid rgba(255,255,255,0.06)",
+                              boxShadow: "0 2px 16px rgba(0,0,0,0.5)",
+                              transform: "translateY(0)",
+                            }
+                          )}
                         >
                           {/* Brand color wash */}
                           <div className="absolute inset-0 z-[1]" style={{ background: cert.overlayGrad }} />
@@ -661,7 +667,7 @@ export default function Home() {
                           />
 
                           {/* Logo area — upper 60% */}
-                          <div className="absolute inset-0 z-[2] flex items-start justify-center pt-4 px-4">
+                          <div className="absolute inset-0 z-[2] flex items-start justify-center pt-3 sm:pt-4 px-2 sm:px-4">
                             <img
                               src={cert.logo}
                               alt={cert.issuer}
@@ -683,10 +689,10 @@ export default function Home() {
                           />
 
                           {/* Footer */}
-                          <div className="absolute bottom-0 left-0 right-0 z-[4] px-2.5 pb-2.5">
+                          <div className="absolute bottom-0 left-0 right-0 z-[4] px-2 pb-2 sm:px-2.5 sm:pb-2.5">
                             {/* Verified pill */}
                             <div
-                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full mb-1 text-[8px] font-bold tracking-widest uppercase"
+                              className="inline-flex items-center gap-0.5 sm:gap-1 px-1 sm:px-1.5 py-0.5 rounded-full mb-0.5 sm:mb-1 text-[7px] sm:text-[8px] font-bold tracking-widest uppercase"
                               style={{
                                 background: `rgba(${cert.accentRgb},0.15)`,
                                 border: `1px solid rgba(${cert.accentRgb},0.38)`,
@@ -700,14 +706,14 @@ export default function Home() {
                             </div>
                             {/* Title */}
                             <h4
-                              className="font-bold text-[11.5px] leading-tight text-white/95 mb-0.5"
+                              className="font-bold text-[9.5px] sm:text-[11.5px] leading-tight text-white/95 mb-0.5 line-clamp-2"
                               style={{ textShadow: "0 1px 4px rgba(0,0,0,0.95)" }}
                             >
                               {cert.title}
                             </h4>
                             {/* Issuer */}
                             <p
-                              className="text-[10px] font-semibold flex items-center gap-1"
+                              className="text-[8.5px] sm:text-[10px] font-semibold flex items-center gap-1 truncate"
                               style={{ opacity: 0.9 }}
                             >
                               <span
@@ -730,10 +736,10 @@ export default function Home() {
           </section>
 
           {/* Skills Section — Infinite Marquee */}
-          <section className="py-24 border-t border-white/5">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-black mb-4 font-display">Technical <span className="text-secondary">Arsenal</span></h2>
-              <p className="text-muted-foreground">Mastery across the modern creative and technical stack.</p>
+          <section className="py-8 sm:py-10 md:py-14 border-t border-white/5">
+            <div className="text-center mb-6 sm:mb-8 px-1">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 sm:mb-3 font-display">Technical <span className="text-secondary">Arsenal</span></h2>
+              <p className="text-muted-foreground text-sm sm:text-base">Mastery across the modern creative and technical stack.</p>
             </div>
 
             {/* Inject keyframes for the marquee animations */}
@@ -752,24 +758,24 @@ export default function Home() {
               .marquee-right:hover { animation-play-state: paused; }
             `}</style>
 
-            <div className="overflow-hidden space-y-5 select-none">
+            <div className="overflow-hidden space-y-3 sm:space-y-5 select-none">
               {/* Row 1 — slides left */}
               <div
                 className="flex gap-4"
-                style={{ maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)" }}
+                style={{ maskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)" }}
               >
-                <div className="marquee-left flex gap-4 whitespace-nowrap">
+                <div className="marquee-left flex gap-3 sm:gap-4 whitespace-nowrap">
                   {skillsRow1.map((skill, i) => (
                     <div
                       key={i}
-                      className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border border-white/8 hover:border-secondary/60 hover:shadow-[0_0_18px_rgba(255,140,0,0.45)] transition-all duration-300 cursor-default font-semibold text-sm flex-shrink-0"
+                      className="inline-flex items-center gap-2 sm:gap-3 px-3 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border border-white/8 hover:border-secondary/60 hover:shadow-[0_0_18px_rgba(255,140,0,0.45)] transition-all duration-300 cursor-default font-semibold text-xs sm:text-sm flex-shrink-0"
                       style={{ background: skill.color }}
                     >
                       <span
-                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ background: skill.color, boxShadow: "0 0 0 2px rgba(255,255,255,0.08)" }}
                       >
-                        <img src={skill.icon} alt={skill.name} className="w-5 h-5 object-contain" loading="lazy" />
+                        <img src={skill.icon} alt={skill.name} className="w-4 h-4 sm:w-5 sm:h-5 object-contain" loading="lazy" />
                       </span>
                       <span className="text-white/90">{skill.name}</span>
                     </div>
@@ -780,20 +786,20 @@ export default function Home() {
               {/* Row 2 — slides right */}
               <div
                 className="flex gap-4"
-                style={{ maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)" }}
+                style={{ maskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)" }}
               >
-                <div className="marquee-right flex gap-4 whitespace-nowrap">
+                <div className="marquee-right flex gap-3 sm:gap-4 whitespace-nowrap">
                   {skillsRow2.map((skill, i) => (
                     <div
                       key={i}
-                      className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border border-white/8 hover:border-primary/60 hover:shadow-[0_0_18px_rgba(0,170,204,0.45)] transition-all duration-300 cursor-default font-semibold text-sm flex-shrink-0"
+                      className="inline-flex items-center gap-2 sm:gap-3 px-3 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl border border-white/8 hover:border-primary/60 hover:shadow-[0_0_18px_rgba(0,170,204,0.45)] transition-all duration-300 cursor-default font-semibold text-xs sm:text-sm flex-shrink-0"
                       style={{ background: skill.color }}
                     >
                       <span
-                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center flex-shrink-0"
                         style={{ background: skill.color, boxShadow: "0 0 0 2px rgba(255,255,255,0.08)" }}
                       >
-                        <img src={skill.icon} alt={skill.name} className="w-5 h-5 object-contain" loading="lazy" />
+                        <img src={skill.icon} alt={skill.name} className="w-4 h-4 sm:w-5 sm:h-5 object-contain" loading="lazy" />
                       </span>
                       <span className="text-white/90">{skill.name}</span>
                     </div>
@@ -804,20 +810,20 @@ export default function Home() {
           </section>
 
           {/* Featured Projects Preview */}
-          <section className="py-24 border-t border-white/5">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <section className="py-8 sm:py-10 md:py-14 border-t border-white/5">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 sm:mb-8 gap-3 sm:gap-4">
               <div>
-                <h2 className="text-4xl font-black mb-4 font-display">Featured <span className="text-primary">Work</span></h2>
-                <p className="text-muted-foreground">A glimpse into my latest digital creations.</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-1.5 sm:mb-2 font-display">Featured <span className="text-primary">Work</span></h2>
+                <p className="text-muted-foreground text-sm sm:text-base">A glimpse into my latest digital creations.</p>
               </div>
-              <Link href="/projects">
-                <button className="px-6 py-3 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 hover:neon-glow-primary transition-all font-bold flex items-center gap-2">
+              <Link href="/projects" className="w-full md:w-auto">
+                <button className="w-full md:w-auto px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 hover:neon-glow-primary transition-all font-bold text-sm sm:text-base flex items-center justify-center gap-2">
                   All Projects <ChevronRight size={16} />
                 </button>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {featuredProjects.map((project, i) => (
                 <motion.div
                   key={project.id}
@@ -830,7 +836,7 @@ export default function Home() {
                     <div className="block cursor-pointer h-full">
                       <TiltCard maxTilt={16} glareOpacity={0.25} className="h-full flex flex-col group border-white/5 hover:border-primary/40 transition-colors duration-300 bg-background/40">
                         {project.image ? (
-                          <div className="h-48 w-full overflow-hidden relative">
+                          <div className="h-40 sm:h-48 w-full overflow-hidden relative">
                             <img
                               src={project.image}
                               alt={project.title}
@@ -839,20 +845,20 @@ export default function Home() {
                             <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
                           </div>
                         ) : (
-                          <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                          <div className={`h-40 sm:h-48 w-full bg-gradient-to-br ${project.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
                         )}
-                        <div className="p-6 flex-1 flex flex-col">
-                          <span className="text-xs font-semibold text-secondary mb-2 uppercase tracking-widest">{project.category}</span>
-                          <h3 className="text-2xl font-bold mb-2 font-display group-hover:text-primary transition-colors">{project.title}</h3>
-                          <p className="text-muted-foreground text-sm mb-4 flex-1">{project.desc}</p>
-                          <div className="flex flex-wrap gap-2 mb-6">
+                        <div className="p-4 sm:p-6 flex-1 flex flex-col">
+                          <span className="text-[10px] sm:text-xs font-semibold text-secondary mb-1.5 sm:mb-2 uppercase tracking-widest">{project.category}</span>
+                          <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-1.5 sm:mb-2 font-display group-hover:text-primary transition-colors">{project.title}</h3>
+                          <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 flex-1 line-clamp-3">{project.desc}</p>
+                          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
                             {project.tech.map(t => (
-                              <span key={t} className="text-xs font-medium px-2 py-1 rounded-md bg-white/5 text-primary border border-white/5">
+                              <span key={t} className="text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-white/5 text-primary border border-white/5">
                                 {t}
                               </span>
                             ))}
                           </div>
-                          <div className="flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">
+                          <div className="flex items-center gap-2 text-primary font-bold text-xs sm:text-sm group-hover:gap-3 transition-all">
                             <ExternalLink size={14} /> View Details <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </div>

@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-export function PageWrapper({ children }: { children: ReactNode }) {
+export function PageWrapper({ children, compactTop }: { children: ReactNode; compactTop?: boolean }) {
   // Scroll to top every time this page mounts (i.e. on every navigation)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -18,7 +18,11 @@ export function PageWrapper({ children }: { children: ReactNode }) {
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
-      className="pt-24 pb-16 min-h-screen"
+      className={
+        compactTop
+          ? "pt-6 sm:pt-8 pb-10 min-h-screen"
+          : "pt-20 sm:pt-24 pb-10 sm:pb-14 min-h-screen"
+      }
     >
       {children}
     </motion.div>

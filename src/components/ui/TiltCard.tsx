@@ -1,5 +1,6 @@
 import { ReactNode, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useFinePointer } from "@/hooks/use-fine-pointer";
 
 interface TiltCardProps {
   children: ReactNode;
@@ -18,38 +19,76 @@ export function TiltCard({
   maxTilt = 14,
   glareOpacity = 0.22,
 }: TiltCardProps) {
+  const hasFinePointer = useFinePointer();
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [glareX, setGlareX] = useState(50);
   const [glareY, setGlareY] = useState(50);
   const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const updateTiltFromPoint = (clientX: number, clientY: number) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
 
-    // Normalized cursor position: -1 to +1
-    const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+    const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
+    const ny = ((clientY - rect.top) / rect.height) * 2 - 1;
 
-    setRotateX(-ny * maxTilt);   // tilt up/down (inverted so it feels natural)
-    setRotateY(nx * maxTilt);    // tilt left/right
-
-    // Glare position as percentage for the gradient
-    setGlareX(((e.clientX - rect.left) / rect.width) * 100);
-    setGlareY(((e.clientY - rect.top) / rect.height) * 100);
+    setRotateX(-ny * maxTilt);
+    setRotateY(nx * maxTilt);
+    setGlareX(((clientX - rect.left) / rect.width) * 100);
+    setGlareY(((clientY - rect.top) / rect.height) * 100);
   };
 
-  const handleMouseEnter = () => setIsHovered(true);
-
-  const handleMouseLeave = () => {
+  const resetTilt = () => {
     setRotateX(0);
     setRotateY(0);
     setGlareX(50);
     setGlareY(50);
     setIsHovered(false);
+    setIsPressed(false);
   };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!hasFinePointer) return;
+    updateTiltFromPoint(e.clientX, e.clientY);
+  };
+
+  const handleMouseEnter = () => {
+    if (!hasFinePointer) return;
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!hasFinePointer) return;
+    resetTilt();
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (hasFinePointer) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    setIsPressed(true);
+    updateTiltFromPoint(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (hasFinePointer) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    updateTiltFromPoint(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchEnd = () => {
+    if (hasFinePointer) return;
+    resetTilt();
+  };
+
+  const showGlare = hasFinePointer ? isHovered : isPressed;
+  const scale = hasFinePointer
+    ? isHovered ? 1.025 : 1
+    : isPressed ? 0.98 : 1;
 
   return (
     <motion.div
@@ -57,11 +96,15 @@ export function TiltCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       animate={{
-        rotateX,
-        rotateY,
-        scale: isHovered ? 1.025 : 1,
-        z: isHovered ? 30 : 0,
+        rotateX: hasFinePointer || isPressed ? rotateX : 0,
+        rotateY: hasFinePointer || isPressed ? rotateY : 0,
+        scale,
+        z: hasFinePointer && isHovered ? 30 : 0,
       }}
       transition={{
         type: "spring",
@@ -73,6 +116,8 @@ export function TiltCard({
         perspective: 1000,
         transformStyle: "preserve-3d",
         willChange: "transform",
+        touchAction: hasFinePointer ? undefined : "manipulation",
+        WebkitTapHighlightColor: "transparent",
         ...styleProp,
       }}
       className={`glassmorphism rounded-xl overflow-hidden relative ${className}`}
@@ -91,7 +136,7 @@ export function TiltCard({
           borderRadius: "inherit",
           pointerEvents: "none",
           zIndex: 2,
-          opacity: isHovered ? glareOpacity : 0,
+          opacity: showGlare ? glareOpacity : 0,
           transition: "opacity 0.35s ease",
           background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.08) 40%, transparent 65%)`,
         }}
@@ -106,7 +151,7 @@ export function TiltCard({
           borderRadius: "inherit",
           pointerEvents: "none",
           zIndex: 3,
-          opacity: isHovered ? 1 : 0,
+          opacity: showGlare ? 1 : 0,
           transition: "opacity 0.35s ease",
           boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.25)",
         }}

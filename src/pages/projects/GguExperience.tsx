@@ -63,16 +63,16 @@ export default function GguExperience() {
         }
       `}</style>
 
-      <div className="container mx-auto px-6 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-2 text-sm text-muted-foreground mb-10"
+          className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8 flex-wrap"
         >
-          <Link href="/"><span className="hover:text-primary transition-colors cursor-pointer">Home</span></Link>
+          <Link href="/"><span className="nav-link-touch">Home</span></Link>
           <ChevronRight size={14} />
-          <Link href="/projects"><span className="hover:text-primary transition-colors cursor-pointer">Projects</span></Link>
+          <Link href="/projects"><span className="nav-link-touch">Projects</span></Link>
           <ChevronRight size={14} />
           <span className="text-white font-medium">GGU Experience</span>
         </motion.div>
@@ -82,34 +82,33 @@ export default function GguExperience() {
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
-          className="relative w-full rounded-3xl overflow-hidden mb-12 border border-white/10"
-          style={{ minHeight: 440 }}
+          className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden mb-8 sm:mb-10 border border-white/10 min-h-[240px] sm:min-h-[340px] md:min-h-[440px]"
         >
           <img
             src={PROJECT_DATA.image}
             alt={PROJECT_DATA.title}
-            className="w-full h-[440px] object-cover object-center"
+            className="w-full h-[240px] sm:h-[340px] md:h-[440px] object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/50 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#050816]/80 via-transparent to-transparent" />
 
           {/* Hero text overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-12">
             <div className="flex flex-wrap items-center gap-3 mb-4">
             </div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight shimmer-text mb-2">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-black tracking-tight shimmer-text mb-2">
               {PROJECT_DATA.title}
             </h1>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mt-3">
+            <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mt-3">
               {PROJECT_DATA.desc}
             </p>
           </div>
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8 mb-8 sm:mb-12 md:mb-14">
           {/* Left Column */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-5 sm:space-y-8">
             {/* Overview */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -119,12 +118,12 @@ export default function GguExperience() {
               <TiltCard
                 maxTilt={8}
                 glareOpacity={0.18}
-                className="p-8 border-white/10 hover:border-indigo-500/40 transition-colors bg-white/[0.02] backdrop-blur-sm"
+                className="p-4 sm:p-6 md:p-8 border-white/10 touch-manipulation hover:border-indigo-500/40 transition-colors bg-white/[0.02] backdrop-blur-sm"
               >
-                <h2 className="text-xl font-black mb-5 flex items-center gap-2 text-white">
+                <h2 className="text-lg sm:text-xl font-black mb-3 sm:mb-5 flex items-center gap-2 text-white">
                   <Layers size={18} className="text-indigo-400" /> About GGU Experience
                 </h2>
-                <p className="text-muted-foreground leading-relaxed text-[15px]">
+                <p className="text-muted-foreground leading-relaxed text-sm sm:text-[15px]">
                   {PROJECT_DATA.longDesc}
                 </p>
               </TiltCard>
@@ -135,7 +134,7 @@ export default function GguExperience() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
             >
               {FEATURES.map((feat, idx) => {
                 const IconComponent = feat.icon;
@@ -144,13 +143,13 @@ export default function GguExperience() {
                     key={idx}
                     maxTilt={10}
                     glareOpacity={0.2}
-                    className="p-6 border-white/10 hover:border-indigo-500/40 transition-colors bg-white/[0.02]"
+                    className="p-4 sm:p-6 border-white/10 touch-manipulation hover:border-indigo-500/40 transition-colors bg-white/[0.02]"
                   >
                     <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4 text-indigo-400">
                       <IconComponent size={20} />
                     </div>
-                    <h3 className="text-white font-bold text-base mb-2">{feat.title}</h3>
-                    <p className="text-muted-foreground text-xs leading-relaxed">{feat.description}</p>
+                    <h3 className="text-white font-bold text-sm sm:text-base mb-1.5 sm:mb-2">{feat.title}</h3>
+                    <p className="text-muted-foreground text-[11px] sm:text-xs leading-relaxed">{feat.description}</p>
                   </TiltCard>
                 );
               })}
@@ -165,9 +164,9 @@ export default function GguExperience() {
               <TiltCard
                 maxTilt={8}
                 glareOpacity={0.18}
-                className="p-8 border-white/10 hover:border-secondary/30 transition-colors bg-white/[0.02]"
+                className="p-4 sm:p-6 md:p-8 border-white/10 touch-manipulation hover:border-secondary/30 transition-colors bg-white/[0.02]"
               >
-                <h2 className="text-xl font-black mb-5 flex items-center gap-2 text-white">
+                <h2 className="text-lg sm:text-xl font-black mb-3 sm:mb-5 flex items-center gap-2 text-white">
                   <CheckCircle2 size={18} className="text-secondary" /> Features & Student Impact
                 </h2>
                 <ul className="space-y-3">
@@ -177,7 +176,7 @@ export default function GguExperience() {
                       initial={{ opacity: 0, x: -15 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 + i * 0.07 }}
-                      className="flex items-start gap-3 text-[15px] text-muted-foreground"
+                      className="flex items-start gap-3 text-sm sm:text-[15px] text-muted-foreground"
                     >
                       <span className="mt-1 w-5 h-5 rounded-full bg-secondary/15 border border-secondary/30 flex items-center justify-center flex-shrink-0">
                         <CheckCircle2 size={11} className="text-secondary" />
@@ -199,16 +198,16 @@ export default function GguExperience() {
                 <TiltCard
                   maxTilt={6}
                   glareOpacity={0.15}
-                  className="p-8 border-white/10 hover:border-indigo-500/30 transition-colors bg-white/[0.02]"
+                  className="p-4 sm:p-6 md:p-8 border-white/10 touch-manipulation hover:border-indigo-500/30 transition-colors bg-white/[0.02]"
                 >
-                  <h2 className="text-xl font-black mb-5 text-white">App Screenshots & UI Mockups</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <h2 className="text-lg sm:text-xl font-black mb-3 sm:mb-5 text-white">App Screenshots & UI Mockups</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {PROJECT_DATA.gallery.map((img, i) => (
                       <div key={i} className="rounded-xl overflow-hidden border border-white/10 aspect-video">
                         <img
                           src={img}
                           alt={`GGU Experience screenshot ${i + 1}`}
-                          className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover object-center hover:scale-105 active:scale-105 transition-transform duration-500"
                         />
                       </div>
                     ))}
@@ -219,7 +218,7 @@ export default function GguExperience() {
           </div>
 
           {/* Right Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Links */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -228,9 +227,9 @@ export default function GguExperience() {
             >
               <div
 
-                className="p-6 border-white/10 hover:border-indigo-500/30 transition-colors bg-white/[0.02]"
+                className="p-4 sm:p-6 border-white/10 touch-manipulation hover:border-indigo-500/30 transition-colors bg-white/[0.02]"
               >
-                <h3 className="text-base font-bold text-white mb-4">Project Links</h3>
+                <h3 className="text-sm sm:text-base font-bold text-white mb-3 sm:mb-4">Project Links</h3>
                 <div className="space-y-3">
                   <a
                     href="https://ggudash-39ddc.web.app/"
@@ -249,7 +248,7 @@ export default function GguExperience() {
                     <Github size={15} /> GitHub Repository
                   </a>
                   <Link href="/projects">
-                    <button className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-muted-foreground border border-white/10 hover:text-white hover:border-white/20 transition-all font-medium text-sm">
+                    <button className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-muted-foreground border border-white/10 active:text-white active:border-white/20 hover:text-white hover:border-white/20 transition-all font-medium text-sm btn-touch">
                       <ArrowLeft size={14} /> Back to Projects
                     </button>
                   </Link>
@@ -266,14 +265,14 @@ export default function GguExperience() {
               <TiltCard
                 maxTilt={10}
                 glareOpacity={0.2}
-                className="p-6 border-white/10 hover:border-secondary/30 transition-colors bg-white/[0.02]"
+                className="p-4 sm:p-6 border-white/10 touch-manipulation hover:border-secondary/30 transition-colors bg-white/[0.02]"
               >
-                <h3 className="text-base font-bold text-white mb-4">Tech Stack</h3>
+                <h3 className="text-sm sm:text-base font-bold text-white mb-3 sm:mb-4">Tech Stack</h3>
                 <div className="flex flex-wrap gap-2">
                   {PROJECT_DATA.tech.map((t) => (
                     <span
                       key={t}
-                      className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20 transition-colors"
+                      className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20 active:bg-indigo-500/20 transition-colors"
                     >
                       {t}
                     </span>
@@ -291,9 +290,9 @@ export default function GguExperience() {
               <TiltCard
                 maxTilt={10}
                 glareOpacity={0.2}
-                className="p-6 border-white/10 hover:border-accent/30 transition-colors bg-white/[0.02]"
+                className="p-4 sm:p-6 border-white/10 touch-manipulation hover:border-accent/30 transition-colors bg-white/[0.02]"
               >
-                <h3 className="text-base font-bold text-white mb-4">Project Meta</h3>
+                <h3 className="text-sm sm:text-base font-bold text-white mb-3 sm:mb-4">Project Meta</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between items-center border-b border-white/5 pb-3">
                     <span className="text-muted-foreground">Category</span>
@@ -322,12 +321,12 @@ export default function GguExperience() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="border-t border-white/10 pt-16"
+          className="border-t border-white/10 pt-8 sm:pt-12 md:pt-14"
         >
-          <h2 className="text-2xl font-black mb-8 text-white">
+          <h2 className="text-xl sm:text-2xl font-black mb-5 sm:mb-8 text-white">
             Explore Other <span className="text-primary">Projects</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {otherProjects.map((p) => (
               <Link key={p.id} href={`/projects/${p.slug}`}>
                 <TiltCard
@@ -335,23 +334,23 @@ export default function GguExperience() {
                   glareOpacity={0.22}
                   className="group border-white/10 overflow-hidden cursor-pointer hover:border-primary/40 transition-colors bg-white/[0.02] h-full flex flex-col"
                 >
-                  <div className="h-36 overflow-hidden relative">
+                  <div className="h-32 sm:h-36 overflow-hidden relative">
                     <img
                       src={p.image}
                       alt={p.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 group-active:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050816]/80 to-transparent" />
                   </div>
                   <div className="p-4 flex-1 flex flex-col justify-between">
                     <div>
                       <span className="text-xs text-secondary font-medium">{p.category}</span>
-                      <h4 className="text-white font-bold mt-1 group-hover:text-primary transition-colors">
+                      <h4 className="text-white font-bold mt-1 group-hover:text-primary group-active:text-primary transition-colors">
                         {p.title}
                       </h4>
                       <p className="text-muted-foreground text-xs mt-1 line-clamp-2">{p.desc}</p>
                     </div>
-                    <div className="flex items-center gap-1 mt-3 text-primary text-xs font-bold group-hover:gap-2 transition-all">
+                    <div className="flex items-center gap-1 mt-3 text-primary text-xs font-bold group-hover:gap-2 group-active:gap-2 transition-all">
                       View Page <ChevronRight size={12} />
                     </div>
                   </div>

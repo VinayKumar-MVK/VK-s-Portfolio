@@ -47,9 +47,26 @@ const MILESTONES = [
   }
 ];
 
-const NODE_GAP = 145;
-const NODE_TOP_OFFSET = 60;
+const NODE_GAP_DESKTOP = 145;
+const NODE_GAP_MOBILE = 182;
+const NODE_TOP_OFFSET_DESKTOP = 60;
+const NODE_TOP_OFFSET_MOBILE = 44;
 const BOMB_SIZE = 36;
+const MOBILE_AXIS_LEFT = 20;
+
+function useIsMobile(breakpoint = 640) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [breakpoint]);
+
+  return isMobile;
+}
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 interface Particle {
@@ -72,6 +89,7 @@ interface SmokeParticle {
 
 /* ─── Main Component ─────────────────────────────────────────────────────── */
 export function CinematicTimeline() {
+  const isMobile = useIsMobile();
   const [activeIdx, setActiveIdx] = useState(-1);
   const [completedIdx, setCompletedIdx] = useState(-1);
   const [bombY, setBombY] = useState(-BOMB_SIZE);
@@ -86,9 +104,13 @@ export function CinematicTimeline() {
   const smokeId = useRef(0);
   const particleId = useRef(0);
 
-  const nodePositions = MILESTONES.map((_, i) => NODE_TOP_OFFSET + i * NODE_GAP);
-  const lastNodeCenter = nodePositions[MILESTONES.length - 1] + 20;
-  const totalHeight = lastNodeCenter + 160;
+  const nodeGap = isMobile ? NODE_GAP_MOBILE : NODE_GAP_DESKTOP;
+  const nodeTopOffset = isMobile ? NODE_TOP_OFFSET_MOBILE : NODE_TOP_OFFSET_DESKTOP;
+  const nodeCenterOffset = isMobile ? 26 : 20;
+  const nodePositions = MILESTONES.map((_, i) => nodeTopOffset + i * nodeGap);
+  const axisX = isMobile ? MOBILE_AXIS_LEFT + BOMB_SIZE / 2 : null;
+  const lastNodeCenter = nodePositions[MILESTONES.length - 1] + nodeCenterOffset;
+  const totalHeight = lastNodeCenter + (isMobile ? 120 : 160);
 
   /* ── Particle burst ── */
   const burst = useCallback((x: number, y: number, color: string, count = 18) => {
@@ -114,7 +136,7 @@ export function CinematicTimeline() {
   /* ── Main animation sequence ── */
   const runSequence = useCallback(async () => {
     const containerWidth = containerRef.current?.offsetWidth ?? 300;
-    const centerX = containerWidth / 2;
+    const centerX = axisX ?? containerWidth / 2;
 
     setBombVisible(true);
     setBombY(-BOMB_SIZE);
@@ -147,8 +169,8 @@ export function CinematicTimeline() {
     };
 
     for (let i = 0; i < MILESTONES.length; i++) {
-      const targetNodeY = nodePositions[i] + 20;
-      const startY = i === 0 ? -BOMB_SIZE : nodePositions[i - 1] + 20;
+      const targetNodeY = nodePositions[i] + nodeCenterOffset;
+      const startY = i === 0 ? -BOMB_SIZE : nodePositions[i - 1] + nodeCenterOffset;
       const duration = i === 0 ? 950 : 720;
 
       setActiveIdx(i);
@@ -176,7 +198,7 @@ export function CinematicTimeline() {
 
       // Impact
       setImpactIdx(i);
-      burst(centerX, nodePositions[i] + 20, MILESTONES[i].color, 22);
+      burst(centerX, nodePositions[i] + nodeCenterOffset, MILESTONES[i].color, 22);
 
       // Shake
       for (let s = 0; s < 6; s++) {
@@ -207,7 +229,7 @@ export function CinematicTimeline() {
     setParticles([]);
     await new Promise((r) => setTimeout(r, 300));
     runSequence();
-  }, [nodePositions, burst]);
+  }, [nodePositions, burst, axisX, nodeCenterOffset]);
 
   /* ── Intersection Observer ── */
   useEffect(() => {
@@ -233,7 +255,7 @@ export function CinematicTimeline() {
     };
   }, []);
 
-  const node0Center = nodePositions[0] + 20;
+  const node0Center = nodePositions[0] + nodeCenterOffset;
 
   // Calculate neon line height so bomb, line light, and node centers align perfectly
   let progressLineHeight = 0;
@@ -249,7 +271,7 @@ export function CinematicTimeline() {
   return (
     <div
       ref={containerRef}
-      className="relative select-none overflow-visible pb-8"
+      className="relative select-none overflow-visible pb-4 sm:pb-8"
       style={{ height: totalHeight, minHeight: totalHeight }}
     >
       {/* Ambient background glow */}
@@ -308,7 +330,7 @@ export function CinematicTimeline() {
       <div
         className="absolute top-0 w-px pointer-events-none"
         style={{
-          left: "50%",
+          left: isMobile ? MOBILE_AXIS_LEFT + BOMB_SIZE / 2 : "50%",
           height: lastNodeCenter,
           background:
             "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.08) 8%, rgba(255,255,255,0.08) 92%, transparent 100%)",
@@ -319,7 +341,7 @@ export function CinematicTimeline() {
       <motion.div
         className="absolute pointer-events-none"
         style={{
-          left: "calc(50% - 1px)",
+          left: isMobile ? MOBILE_AXIS_LEFT + BOMB_SIZE / 2 - 1 : "calc(50% - 1px)",
           top: node0Center,
           width: 2,
           transformOrigin: "top",
@@ -343,11 +365,11 @@ export function CinematicTimeline() {
         return (
           <div
             key={i}
-            className="absolute flex items-center"
-            style={{ top: nodePositions[i], left: 0, right: 0, height: 40 }}
+            className="absolute flex items-start sm:items-center"
+            style={{ top: nodePositions[i], left: 0, right: 0, minHeight: isMobile ? 96 : 40 }}
           >
-            {/* Left card (even index) */}
-            {i % 2 === 0 && (
+            {/* Left card (even index) — desktop only */}
+            {!isMobile && i % 2 === 0 && (
               <motion.div
                 className="absolute"
                 style={{ right: "calc(50% + 28px)", maxWidth: "calc(50% - 38px)" }}
@@ -358,12 +380,19 @@ export function CinematicTimeline() {
                 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
               >
-                <MilestoneCard m={m} isCompleted={isCompleted} isActive={isActive} />
+                <MilestoneCard m={m} isCompleted={isCompleted} isActive={isActive} compact={false} />
               </motion.div>
             )}
 
             {/* Central node */}
-            <div className="absolute left-1/2 -translate-x-1/2" style={{ zIndex: 10 }}>
+            <div
+              className="absolute -translate-x-1/2"
+              style={{
+                zIndex: 10,
+                left: isMobile ? MOBILE_AXIS_LEFT + BOMB_SIZE / 2 : "50%",
+                top: isMobile ? 8 : 0,
+              }}
+            >
               {/* Active pulse rings */}
               {isActive && (
                 <>
@@ -444,19 +473,23 @@ export function CinematicTimeline() {
               </motion.div>
             </div>
 
-            {/* Right card (odd index) */}
-            {i % 2 === 1 && (
+            {/* Right card (odd index on desktop, all cards on mobile) */}
+            {(isMobile || i % 2 === 1) && (
               <motion.div
                 className="absolute"
-                style={{ left: "calc(50% + 28px)", maxWidth: "calc(50% - 38px)" }}
-                initial={{ opacity: 0, x: -18 }}
+                style={
+                  isMobile
+                    ? { left: MOBILE_AXIS_LEFT + BOMB_SIZE + 12, right: 0 }
+                    : { left: "calc(50% + 28px)", maxWidth: "calc(50% - 38px)" }
+                }
+                initial={{ opacity: 0, x: isMobile ? 12 : -18 }}
                 animate={{
                   opacity: isCompleted || isActive ? 1 : 0.2,
-                  x: isCompleted || isActive ? 0 : -18,
+                  x: isCompleted || isActive ? 0 : isMobile ? 12 : -18,
                 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
               >
-                <MilestoneCard m={m} isCompleted={isCompleted} isActive={isActive} />
+                <MilestoneCard m={m} isCompleted={isCompleted} isActive={isActive} compact={isMobile} />
               </motion.div>
             )}
           </div>
@@ -470,7 +503,7 @@ export function CinematicTimeline() {
             key="bomb"
             className="absolute pointer-events-none"
             style={{
-              left: "50%",
+              left: isMobile ? MOBILE_AXIS_LEFT + BOMB_SIZE / 2 : "50%",
               top: bombY,
               transform: "translateX(-50%) translateY(-50%)",
               zIndex: 30,
@@ -507,10 +540,12 @@ function MilestoneCard({
   m,
   isCompleted,
   isActive,
+  compact = false,
 }: {
   m: (typeof MILESTONES)[0];
   isCompleted: boolean;
   isActive: boolean;
+  compact?: boolean;
 }) {
   const lit = isCompleted || isActive;
   return (
@@ -520,8 +555,8 @@ function MilestoneCard({
           ? "linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03))"
           : "rgba(255,255,255,0.02)",
         border: `1px solid ${isCompleted ? m.color + "66" : isActive ? m.color + "44" : "rgba(255,255,255,0.08)"}`,
-        borderRadius: 16,
-        padding: "18px 22px",
+        borderRadius: compact ? 12 : 16,
+        padding: compact ? "10px 12px" : "18px 22px",
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
         boxShadow: isCompleted
@@ -529,17 +564,18 @@ function MilestoneCard({
           : "none",
         transition: "all 0.5s ease",
         minWidth: 0,
+        width: "100%",
       }}
     >
       <span
         style={{
-          fontSize: 14,
+          fontSize: compact ? 10 : 14,
           fontWeight: 800,
-          letterSpacing: "0.16em",
+          letterSpacing: compact ? "0.12em" : "0.16em",
           color: m.color,
           textTransform: "uppercase" as const,
           display: "block",
-          marginBottom: 5,
+          marginBottom: compact ? 3 : 5,
           textShadow: isCompleted ? `0 0 10px ${m.color}` : "none",
         }}
       >
@@ -547,22 +583,22 @@ function MilestoneCard({
       </span>
       <p
         style={{
-          fontSize: 16,
+          fontSize: compact ? 13 : 16,
           fontWeight: 700,
           color: lit ? "#f8fafc" : "rgba(255,255,255,0.28)",
           margin: 0,
-          marginBottom: 6,
-          lineHeight: 1.3,
+          marginBottom: compact ? 4 : 6,
+          lineHeight: 1.25,
         }}
       >
         {m.title}
       </p>
       <p
         style={{
-          fontSize: 13,
+          fontSize: compact ? 11 : 13,
           color: lit ? "rgba(255,255,255,0.58)" : "rgba(255,255,255,0.16)",
           margin: 0,
-          lineHeight: 1.55,
+          lineHeight: 1.45,
         }}
       >
         {m.desc}

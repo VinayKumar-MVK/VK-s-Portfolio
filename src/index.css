@@ -124,7 +124,13 @@
   body {
     @apply font-sans antialiased text-foreground;
     background: transparent;
-    cursor: none; /* For custom cursor */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      cursor: none; /* Custom cursor — desktop only */
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -132,7 +138,28 @@
   }
 }
 
-/* ─── Glassmorphism ─── */
+/* ─── Touch-friendly interaction helpers ─── */
+.nav-link-touch {
+  transition: color 0.2s ease;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-link-touch:hover {
+    color: hsl(var(--primary));
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .nav-link-touch:active {
+    color: hsl(var(--primary));
+  }
+}
+
+.btn-touch {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .glassmorphism {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);

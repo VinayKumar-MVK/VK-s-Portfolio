@@ -46,10 +46,8 @@ export function Footer() {
                 filter: "drop-shadow(0 0 8px rgba(0,217,255,0.5))",
               }}
             />
-            <p className="mt-4 text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Full-stack developer &amp; UI/UX designer crafting high-performance
-              web, mobile, and desktop experiences. Turning ideas into polished
-              digital products.
+            <p className="mt-6 text-muted-foreground text-sm leading-relaxed max-w-xs">
+             I don't just write code | I build things that actually get used. 
             </p>
 
             {/* Social icons */}

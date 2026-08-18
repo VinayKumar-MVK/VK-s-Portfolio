@@ -1,14 +1,19 @@
 import { useEffect, useRef } from "react";
+import { useFinePointer } from "@/hooks/use-fine-pointer";
 
 export function CustomCursor() {
+  const hasFinePointer = useFinePointer();
   const cursorRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!hasFinePointer) return;
+
     let mouseX = 0;
     let mouseY = 0;
     let cursorX = 0;
     let cursorY = 0;
+    let frameId = 0;
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
@@ -21,20 +26,23 @@ export function CustomCursor() {
     const animate = () => {
       cursorX += (mouseX - cursorX) * 0.2;
       cursorY += (mouseY - cursorY) * 0.2;
-      
+
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
       }
-      requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(animate);
     };
 
     window.addEventListener("mousemove", onMouseMove);
-    requestAnimationFrame(animate);
+    frameId = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
+      cancelAnimationFrame(frameId);
     };
-  }, []);
+  }, [hasFinePointer]);
+
+  if (!hasFinePointer) return null;
 
   return (
     <>

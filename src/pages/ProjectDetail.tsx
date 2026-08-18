@@ -29,11 +29,11 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <PageWrapper>
-        <div className="container mx-auto px-6 min-h-[60vh] flex flex-col items-center justify-center text-center gap-6">
-          <h1 className="text-5xl font-black text-primary">404</h1>
-          <p className="text-muted-foreground text-lg">Project not found.</p>
+        <div className="container mx-auto px-4 sm:px-6 min-h-[50vh] flex flex-col items-center justify-center text-center gap-4 sm:gap-6">
+          <h1 className="text-4xl sm:text-5xl font-black text-primary">404</h1>
+          <p className="text-muted-foreground text-base sm:text-lg">Project not found.</p>
           <Link href="/projects">
-            <button className="flex items-center gap-2 px-6 py-3 rounded-xl glassmorphism text-primary border border-primary/30 hover:bg-primary/10 hover:neon-glow-primary transition-all font-bold">
+            <button className="flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl glassmorphism text-primary border border-primary/30 hover:bg-primary/10 active:bg-primary/10 hover:neon-glow-primary transition-all font-bold text-sm sm:text-base btn-touch">
               <ArrowLeft size={16} /> Back to Projects
             </button>
           </Link>
@@ -68,9 +68,9 @@ export default function ProjectDetail() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-10 flex-wrap"
         >
-          <Link href="/"><span className="hover:text-primary transition-colors cursor-pointer">Home</span></Link>
+          <Link href="/"><span className="nav-link-touch">Home</span></Link>
           <ChevronRight size={14} />
-          <Link href="/projects"><span className="hover:text-primary transition-colors cursor-pointer">Projects</span></Link>
+          <Link href="/projects"><span className="nav-link-touch">Projects</span></Link>
           <ChevronRight size={14} />
           <span className="text-white font-medium truncate max-w-[140px] sm:max-w-none">{project.title}</span>
         </motion.div>
@@ -120,10 +120,10 @@ export default function ProjectDetail() {
         </motion.div>
 
         {/* ── Main Grid ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8 mb-8 sm:mb-12 md:mb-14">
 
           {/* Left column */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-5 sm:space-y-8">
 
             {/* About the Project */}
             <motion.div
@@ -134,13 +134,13 @@ export default function ProjectDetail() {
               <TiltCard
                 maxTilt={8}
                 glareOpacity={0.18}
-                className="p-8 border-white/8 hover:border-primary/30 transition-colors bg-transparent backdrop-blur-sm"
+                className="p-4 sm:p-6 md:p-8 border-white/8 hover:border-primary/30 active:border-primary/30 transition-colors bg-transparent backdrop-blur-sm touch-manipulation"
                 style={{ background: "rgba(255,255,255,0.03)" }}
               >
-                <h2 className="text-xl font-black mb-5 flex items-center gap-2 text-white">
-                  <Layers size={18} className="text-primary" /> About the Project
+                <h2 className="text-lg sm:text-xl font-black mb-3 sm:mb-5 flex items-center gap-2 text-white">
+                  <Layers size={18} className="text-primary shrink-0" /> About the Project
                 </h2>
-                <p className="text-muted-foreground leading-relaxed text-[15px]">
+                <p className="text-muted-foreground leading-relaxed text-sm sm:text-[15px]">
                   {project.longDesc}
                 </p>
               </TiltCard>
@@ -155,20 +155,20 @@ export default function ProjectDetail() {
               <TiltCard
                 maxTilt={8}
                 glareOpacity={0.18}
-                className="p-8 border-white/8 hover:border-secondary/30 transition-colors bg-transparent backdrop-blur-sm"
+                className="p-4 sm:p-6 md:p-8 border-white/8 hover:border-secondary/30 active:border-secondary/30 transition-colors bg-transparent backdrop-blur-sm touch-manipulation"
                 style={{ background: "rgba(255,255,255,0.03)" }}
               >
-                <h2 className="text-xl font-black mb-5 flex items-center gap-2 text-white">
-                  <CheckCircle2 size={18} className="text-secondary" /> Key Highlights
+                <h2 className="text-lg sm:text-xl font-black mb-3 sm:mb-5 flex items-center gap-2 text-white">
+                  <CheckCircle2 size={18} className="text-secondary shrink-0" /> Key Highlights
                 </h2>
-                <ul className="space-y-3">
+                <ul className="space-y-2.5 sm:space-y-3">
                   {project.highlights.map((h, i) => (
                     <motion.li
                       key={i}
                       initial={{ opacity: 0, x: -15 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 + i * 0.07 }}
-                      className="flex items-start gap-3 text-[15px] text-muted-foreground"
+                      className="flex items-start gap-2.5 sm:gap-3 text-sm sm:text-[15px] text-muted-foreground"
                     >
                       <span className="mt-1 w-5 h-5 rounded-full bg-secondary/15 border border-secondary/30 flex items-center justify-center flex-shrink-0">
                         <CheckCircle2 size={11} className="text-secondary" />
@@ -190,17 +190,17 @@ export default function ProjectDetail() {
                 <TiltCard
                   maxTilt={6}
                   glareOpacity={0.15}
-                  className="p-8 border-white/8 hover:border-accent/30 transition-colors bg-transparent backdrop-blur-sm"
+                  className="p-4 sm:p-6 md:p-8 border-white/8 hover:border-accent/30 active:border-accent/30 transition-colors bg-transparent backdrop-blur-sm touch-manipulation"
                   style={{ background: "rgba(255,255,255,0.03)" }}
                 >
-                  <h2 className="text-xl font-black mb-5 text-white">Gallery</h2>
+                  <h2 className="text-lg sm:text-xl font-black mb-3 sm:mb-5 text-white">Gallery</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {project.gallery.map((img, i) => (
                       <div key={i} className="rounded-xl overflow-hidden border border-white/8 aspect-video">
                         <img
                           src={img}
                           alt={`${project.title} screenshot ${i + 1}`}
-                          className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover object-center hover:scale-105 active:scale-105 transition-transform duration-500"
                         />
                       </div>
                     ))}
@@ -211,7 +211,7 @@ export default function ProjectDetail() {
           </div>
 
           {/* Right sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
 
             {/* CTA buttons */}
             <motion.div
@@ -222,22 +222,22 @@ export default function ProjectDetail() {
               <TiltCard
                 maxTilt={10}
                 glareOpacity={0.2}
-                className="p-6 border-white/8 hover:border-primary/30 transition-colors bg-transparent backdrop-blur-sm"
+                className="p-4 sm:p-6 border-white/8 hover:border-primary/30 active:border-primary/30 transition-colors bg-transparent backdrop-blur-sm touch-manipulation"
                 style={{ background: "rgba(255,255,255,0.03)" }}
               >
-                <h3 className="text-base font-bold text-white mb-4">Project Links</h3>
-                <div className="space-y-3">
+                <h3 className="text-sm sm:text-base font-bold text-white mb-3 sm:mb-4">Project Links</h3>
+                <div className="space-y-2.5 sm:space-y-3">
                   {project.liveUrl ? (
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-primary/15 text-primary border border-primary/30 hover:bg-primary hover:text-black hover:neon-glow-primary transition-all font-bold text-sm"
+                      className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 rounded-xl bg-primary/15 text-primary border border-primary/30 hover:bg-primary hover:text-black active:bg-primary active:text-black hover:neon-glow-primary transition-all font-bold text-sm btn-touch"
                     >
                       <ExternalLink size={15} /> Live Demo
                     </a>
                   ) : (
-                    <div className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-white/5 text-muted-foreground border border-white/8 font-bold text-sm cursor-not-allowed select-none">
+                    <div className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 rounded-xl bg-white/5 text-muted-foreground border border-white/8 font-bold text-sm cursor-not-allowed select-none">
                       <ExternalLink size={15} /> Live Demo — Coming Soon
                     </div>
                   )}
@@ -247,18 +247,18 @@ export default function ProjectDetail() {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-3 rounded-xl glassmorphism text-white border border-white/10 hover:bg-white/10 hover:border-white/30 transition-all font-bold text-sm"
+                      className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 rounded-xl glassmorphism text-white border border-white/10 hover:bg-white/10 active:bg-white/10 hover:border-white/30 active:border-white/30 transition-all font-bold text-sm btn-touch"
                     >
                       <Github size={15} /> View on GitHub
                     </a>
                   ) : (
-                    <div className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-white/5 text-muted-foreground border border-white/8 font-bold text-sm cursor-not-allowed select-none">
+                    <div className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 rounded-xl bg-white/5 text-muted-foreground border border-white/8 font-bold text-sm cursor-not-allowed select-none">
                       <Github size={15} /> GitHub — Private Repo
                     </div>
                   )}
 
                   <Link href="/projects">
-                    <button className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-muted-foreground border border-white/8 hover:text-white hover:border-white/20 transition-all font-medium text-sm">
+                    <button className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 rounded-xl text-muted-foreground border border-white/8 active:text-white active:border-white/20 hover:text-white hover:border-white/20 transition-all font-medium text-sm btn-touch">
                       <ArrowLeft size={14} /> Back to All Projects
                     </button>
                   </Link>
@@ -275,15 +275,15 @@ export default function ProjectDetail() {
               <TiltCard
                 maxTilt={10}
                 glareOpacity={0.2}
-                className="p-6 border-white/8 hover:border-secondary/30 transition-colors bg-transparent backdrop-blur-sm"
+                className="p-4 sm:p-6 border-white/8 hover:border-secondary/30 active:border-secondary/30 transition-colors bg-transparent backdrop-blur-sm touch-manipulation"
                 style={{ background: "rgba(255,255,255,0.03)" }}
               >
-                <h3 className="text-base font-bold text-white mb-4">Tech Stack</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="text-sm sm:text-base font-bold text-white mb-3 sm:mb-4">Tech Stack</h3>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {project.tech.map((t) => (
                     <span
                       key={t}
-                      className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-secondary/10 text-secondary border border-secondary/20 hover:bg-secondary/20 transition-colors"
+                      className="text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-secondary/10 text-secondary border border-secondary/20 hover:bg-secondary/20 active:bg-secondary/20 transition-colors"
                     >
                       {t}
                     </span>
@@ -301,17 +301,17 @@ export default function ProjectDetail() {
               <TiltCard
                 maxTilt={10}
                 glareOpacity={0.2}
-                className="p-6 border-white/8 hover:border-accent/30 transition-colors bg-transparent backdrop-blur-sm"
+                className="p-4 sm:p-6 border-white/8 hover:border-accent/30 active:border-accent/30 transition-colors bg-transparent backdrop-blur-sm touch-manipulation"
                 style={{ background: "rgba(255,255,255,0.03)" }}
               >
-                <h3 className="text-base font-bold text-white mb-4">Details</h3>
-                <div className="space-y-3">
+                <h3 className="text-sm sm:text-base font-bold text-white mb-3 sm:mb-4">Details</h3>
+                <div className="space-y-2.5 sm:space-y-3">
                   {[
                     { label: "Category", value: project.category },
                     { label: "Year", value: project.year },
                     { label: "Status", value: project.status },
                   ].map(({ label, value }) => (
-                    <div key={label} className="flex justify-between items-center text-sm border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                    <div key={label} className="flex justify-between items-center text-xs sm:text-sm border-b border-white/5 pb-2.5 sm:pb-3 last:border-0 last:pb-0">
                       <span className="text-muted-foreground">{label}</span>
                       <span className="text-white font-medium">{value}</span>
                     </div>
@@ -327,12 +327,12 @@ export default function ProjectDetail() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="border-t border-white/5 pt-16"
+          className="border-t border-white/5 pt-8 sm:pt-12 md:pt-14"
         >
-          <h2 className="text-2xl font-black mb-8 text-white">
+          <h2 className="text-xl sm:text-2xl font-black mb-5 sm:mb-8 text-white">
             More <span className="text-primary">Projects</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {PROJECTS.filter((p) => p.id !== project.id)
               .slice(0, 3)
               .map((p, i) => (
@@ -346,28 +346,28 @@ export default function ProjectDetail() {
                     <TiltCard
                       maxTilt={14}
                       glareOpacity={0.22}
-                      className="group border-white/8 overflow-hidden cursor-pointer hover:border-primary/40 transition-colors bg-transparent"
+                      className="group border-white/8 overflow-hidden cursor-pointer hover:border-primary/40 active:border-primary/40 transition-colors bg-transparent touch-manipulation"
                       style={{ background: "rgba(255,255,255,0.03)" }}
                     >
                       {p.image ? (
-                        <div className="h-36 overflow-hidden relative">
+                        <div className="h-32 sm:h-36 overflow-hidden relative">
                           <img
                             src={p.image}
                             alt={p.title}
-                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                            className="w-full h-full object-cover object-center group-hover:scale-105 group-active:scale-105 transition-transform duration-500"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-[#050816]/80 to-transparent" />
                         </div>
                       ) : (
-                        <div className={`h-36 bg-gradient-to-br ${p.gradient} opacity-70 group-hover:opacity-90 transition-opacity`} />
+                        <div className={`h-32 sm:h-36 bg-gradient-to-br ${p.gradient} opacity-70 group-hover:opacity-90 group-active:opacity-90 transition-opacity`} />
                       )}
-                      <div className="p-4">
-                        <span className="text-xs text-secondary font-medium">{p.category}</span>
-                        <h4 className="text-white font-bold mt-1 group-hover:text-primary transition-colors">
+                      <div className="p-3 sm:p-4">
+                        <span className="text-[10px] sm:text-xs text-secondary font-medium">{p.category}</span>
+                        <h4 className="text-sm sm:text-base text-white font-bold mt-1 group-hover:text-primary group-active:text-primary transition-colors">
                           {p.title}
                         </h4>
-                        <p className="text-muted-foreground text-xs mt-1 line-clamp-2">{p.desc}</p>
-                        <div className="flex items-center gap-1 mt-3 text-primary text-xs font-bold group-hover:gap-2 transition-all">
+                        <p className="text-muted-foreground text-[11px] sm:text-xs mt-1 line-clamp-2">{p.desc}</p>
+                        <div className="flex items-center gap-1 mt-2 sm:mt-3 text-primary text-[11px] sm:text-xs font-bold group-hover:gap-2 group-active:gap-2 transition-all">
                           View Project <ChevronRight size={12} />
                         </div>
                       </div>
