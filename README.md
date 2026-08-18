@@ -19,7 +19,7 @@ The website provides an overview of my development journey and serves as a centr
 * HTML
 * CSS
 * JavaScript
-* [Add other technologies/frameworks you used]
+* React + vite Framework
 
 ### Live Portfolio
 
