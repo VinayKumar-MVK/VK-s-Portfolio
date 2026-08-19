@@ -8,7 +8,7 @@ import {
 import { supabase, ContactMessage } from "@/lib/supabase";
 import { useFinePointer } from "@/hooks/use-fine-pointer";
 
-const ADMIN_PASSWORD = (import.meta.env.VITE_ADMIN_PASSWORD as string) || "admin@vk2025";
+const ADMIN_PASSWORD = (import.meta.env.VITE_ADMIN_PASSWORD as string) || "Vk172003";
 
 const actionBtn =
   "flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-lg text-[11px] sm:text-xs font-semibold transition-all btn-touch touch-manipulation";
